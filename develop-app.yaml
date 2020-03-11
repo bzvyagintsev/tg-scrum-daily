@@ -1,0 +1,20 @@
+runtime: nodejs10
+service: staging
+
+# Хэндлеры прописал, потому что Гугл выдавал ошибку при деплое
+# https://stackoverflow.com/questions/50842007/no-urlmap-entries-found-in-application-configuration/50842459
+handlers:
+- url: /.*
+  secure: always
+  redirect_http_response_code: 301
+  script: auto
+
+# Настройки заданы, чтобы не запускалось несколько версий бота
+# И чтобы после деплоя, сразу запускался один инстанс
+# https://cloud.google.com/appengine/docs/standard/nodejs/config/appref#manual_scaling
+manual_scaling:
+  instances: 1
+  
+env_variables:
+  NODE_ENV: "staging"
+  TELEGRAM_TOKEN: "YOUR_TELEGRAM_TOKEN"
